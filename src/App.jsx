@@ -1,22 +1,19 @@
 import { useState, useEffect } from 'react';
 
 function App() {
-  // LocalStorage se tasks load karna
   const [todos, setTodos] = useState(() => {
-    const saved = localStorage.getItem('pro_todos');
+    const saved = localStorage.getItem('pro_todos_light');
     return saved ? JSON.parse(saved) : [];
   });
 
   const [input, setInput] = useState('');
-  const [priority, setPriority] = useState('Medium'); // High, Medium, Low
-  const [filter, setFilter] = useState('all'); // all, active, completed
+  const [priority, setPriority] = useState('Medium');
+  const [filter, setFilter] = useState('all');
 
-  // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem('pro_todos', JSON.stringify(todos));
+    localStorage.setItem('pro_todos_light', JSON.stringify(todos));
   }, [todos]);
 
-  // Add Task
   const addTodo = (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -34,7 +31,6 @@ function App() {
     setPriority('Medium');
   };
 
-  // Toggle Status
   const toggleComplete = (id) => {
     setTodos(
       todos.map((todo) =>
@@ -43,51 +39,47 @@ function App() {
     );
   };
 
-  // Delete Task
   const deleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
-  // Clear Completed Tasks
   const clearCompleted = () => {
     setTodos(todos.filter((todo) => !todo.completed));
   };
 
-  // Filtered Todos
   const filteredTodos = todos.filter((todo) => {
     if (filter === 'active') return !todo.completed;
     if (filter === 'completed') return todo.completed;
     return true;
   });
 
-  // Stats calculation
   const totalCount = todos.length;
   const completedCount = todos.filter((t) => t.completed).length;
   const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-slate-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-xl bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl shadow-2xl p-6 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-100 to-zinc-200 text-slate-800 flex items-center justify-center p-4 font-sans">
+      <div className="w-full max-w-xl bg-white/80 backdrop-blur-2xl border border-white/80 rounded-3xl shadow-xl shadow-slate-200/60 p-6 md:p-8">
         
         {/* Header Title */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Taskify Pro 🚀
+            <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 bg-clip-text text-transparent">
+              Taskify Pro ✨
             </h1>
-            <p className="text-sm text-slate-400 mt-1">Apne daily ke goals ko smart tarike se manage karo</p>
+            <p className="text-sm text-slate-500 mt-1 font-medium">Apne daily goals ko clean aur smart tarike se manage karo</p>
           </div>
-          <div className="bg-slate-800/80 border border-slate-700/60 px-4 py-2 rounded-2xl text-center">
-            <span className="text-xs text-indigo-400 font-semibold uppercase tracking-wider block">Progress</span>
-            <span className="text-lg font-bold text-slate-200">{progressPercent}%</span>
+          <div className="bg-slate-100 border border-slate-200 px-4 py-2 rounded-2xl text-center shadow-sm">
+            <span className="text-[10px] text-violet-600 font-bold uppercase tracking-wider block">Progress</span>
+            <span className="text-lg font-extrabold text-slate-700">{progressPercent}%</span>
           </div>
         </div>
 
         {/* Progress Bar */}
         {totalCount > 0 && (
-          <div className="w-full bg-slate-800 h-2 rounded-full mb-6 overflow-hidden border border-slate-700/50">
+          <div className="w-full bg-slate-100 h-2.5 rounded-full mb-6 overflow-hidden border border-slate-200">
             <div 
-              className="bg-gradient-to-r from-indigo-500 to-pink-500 h-full transition-all duration-500 rounded-full"
+              className="bg-gradient-to-r from-violet-500 to-indigo-600 h-full transition-all duration-500 rounded-full"
               style={{ width: `${progressPercent}%` }}
             ></div>
           </div>
@@ -101,12 +93,12 @@ function App() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Naya task yahan likho..."
-              className="flex-1 bg-slate-800/90 border border-slate-700 text-slate-100 px-4 py-3.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-slate-500 text-sm transition"
+              className="flex-1 bg-slate-50 border border-slate-200 text-slate-800 px-4 py-3.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:bg-white placeholder-slate-400 text-sm font-medium transition shadow-sm"
             />
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
-              className="bg-slate-800 border border-slate-700 text-slate-300 px-3 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition cursor-pointer"
+              className="bg-slate-50 border border-slate-200 text-slate-700 px-3 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition cursor-pointer shadow-sm"
             >
               <option value="High">🔴 High</option>
               <option value="Medium">🟡 Medium</option>
@@ -115,30 +107,30 @@ function App() {
           </div>
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-3.5 rounded-2xl shadow-lg shadow-indigo-500/20 transition duration-200 text-sm tracking-wide"
+            className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold py-3.5 rounded-2xl shadow-lg shadow-violet-500/25 transition duration-200 text-sm tracking-wide"
           >
             + Add New Task
           </button>
         </form>
 
         {/* Filter Tabs & Clear Completed */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-5 pb-4 border-b border-slate-800">
-          <div className="flex bg-slate-800/80 p-1 rounded-xl border border-slate-700/50 text-xs font-medium">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-5 pb-4 border-b border-slate-100">
+          <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
             <button
               onClick={() => setFilter('all')}
-              className={`px-3 py-1.5 rounded-lg transition ${filter === 'all' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
+              className={`px-3.5 py-1.5 rounded-lg transition ${filter === 'all' ? 'bg-white text-violet-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
             >
               All ({totalCount})
             </button>
             <button
               onClick={() => setFilter('active')}
-              className={`px-3 py-1.5 rounded-lg transition ${filter === 'active' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
+              className={`px-3.5 py-1.5 rounded-lg transition ${filter === 'active' ? 'bg-white text-violet-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
             >
               Active ({totalCount - completedCount})
             </button>
             <button
               onClick={() => setFilter('completed')}
-              className={`px-3 py-1.5 rounded-lg transition ${filter === 'completed' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
+              className={`px-3.5 py-1.5 rounded-lg transition ${filter === 'completed' ? 'bg-white text-violet-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
             >
               Done ({completedCount})
             </button>
@@ -147,7 +139,7 @@ function App() {
           {completedCount > 0 && (
             <button
               onClick={clearCompleted}
-              className="text-xs text-rose-400 hover:text-rose-300 font-medium px-2.5 py-1.5 rounded-lg hover:bg-rose-500/10 transition"
+              className="text-xs text-rose-500 hover:text-rose-600 font-semibold px-2.5 py-1.5 rounded-lg hover:bg-rose-50 transition"
             >
               Clear Completed
             </button>
@@ -155,20 +147,20 @@ function App() {
         </div>
 
         {/* Task List Container */}
-        <div className="space-y-3 max-h-[340px] overflow-y-auto pr-1 custom-scrollbar">
+        <div className="space-y-3 max-h-[340px] overflow-y-auto pr-1">
           {filteredTodos.length === 0 ? (
-            <div className="text-center py-12 text-slate-500">
-              <p className="text-base font-medium">Yahan koi task nahi mila! ✨</p>
-              <p className="text-xs mt-1 text-slate-600">Naya task add karke apni productivity shuru karo.</p>
+            <div className="text-center py-12 text-slate-400">
+              <p className="text-base font-semibold">Yahan koi task nahi mila! ✨</p>
+              <p className="text-xs mt-1 text-slate-400">Naya task add karke apni productivity shuru karo.</p>
             </div>
           ) : (
             filteredTodos.map((todo) => (
               <div
                 key={todo.id}
-                className={`group flex items-center justify-between p-4 rounded-2xl border transition-all duration-200 ${
+                className={`group flex items-center justify-between p-4 rounded-2xl border transition-all duration-200 shadow-sm ${
                   todo.completed
-                    ? 'bg-slate-900/40 border-slate-800/80 opacity-50'
-                    : 'bg-slate-800/60 border-slate-700/60 hover:border-indigo-500/50 hover:bg-slate-800 shadow-sm'
+                    ? 'bg-slate-50/60 border-slate-200 opacity-60'
+                    : 'bg-white border-slate-200/80 hover:border-violet-300 hover:shadow-md'
                 }`}
               >
                 <div
@@ -179,32 +171,32 @@ function App() {
                     type="checkbox"
                     checked={todo.completed}
                     onChange={() => {}}
-                    className="mt-1 w-4 h-4 accent-indigo-500 cursor-pointer rounded"
+                    className="mt-1 w-4 h-4 accent-violet-600 cursor-pointer rounded"
                   />
                   <div>
                     <p
-                      className={`font-medium text-sm leading-snug select-none ${
-                        todo.completed ? 'line-through text-slate-500' : 'text-slate-200'
+                      className={`font-semibold text-sm leading-snug select-none ${
+                        todo.completed ? 'line-through text-slate-400' : 'text-slate-700'
                       }`}
                     >
                       {todo.text}
                     </p>
                     <div className="flex items-center gap-2 mt-1.5">
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${
-                        todo.priority === 'High' ? 'bg-rose-500/10 border-rose-500/30 text-rose-400' :
-                        todo.priority === 'Medium' ? 'bg-amber-500/10 border-amber-500/30 text-amber-400' :
-                        'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+                      <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold border ${
+                        todo.priority === 'High' ? 'bg-rose-50 border-rose-200 text-rose-600' :
+                        todo.priority === 'Medium' ? 'bg-amber-50 border-amber-200 text-amber-600' :
+                        'bg-emerald-50 border-emerald-200 text-emerald-600'
                       }`}>
                         {todo.priority}
                       </span>
-                      <span className="text-[10px] text-slate-500">{todo.createdAt}</span>
+                      <span className="text-[10px] text-slate-400 font-medium">{todo.createdAt}</span>
                     </div>
                   </div>
                 </div>
 
                 <button
                   onClick={() => deleteTodo(todo.id)}
-                  className="text-slate-500 hover:text-rose-400 p-2 rounded-xl hover:bg-rose-500/10 transition opacity-80 md:opacity-0 group-hover:opacity-100"
+                  className="text-slate-400 hover:text-rose-500 p-2 rounded-xl hover:bg-rose-50 transition opacity-80 md:opacity-0 group-hover:opacity-100"
                   title="Delete task"
                 >
                   🗑️
@@ -215,9 +207,9 @@ function App() {
         </div>
 
         {/* Footer info */}
-        <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
+        <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 font-medium">
           <span>Total: {totalCount} tasks</span>
-          <span>Built with React & Tailwind ⚡</span>
+          <span>Clean Minimalist Edition ⚡</span>
         </div>
 
       </div>
